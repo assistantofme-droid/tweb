@@ -10,7 +10,10 @@ type A = Record<DcAuthKey, string> &
     push_key_fingerprint?: string,
     userId: PeerId,
     dcId: TrueDcId,
-    date: number
+    date: number,
+    // 7eve9Chat backend session (see @lib/sevenNine/restBridge)
+    seven_nine_token: string,
+    seven_nine_self_id: string
   };
 
 export type AccountSessionData = Partial<A>;

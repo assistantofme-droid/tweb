@@ -301,16 +301,10 @@ export class ApiManager extends ApiManagerMethods {
 
     const totalAccounts = await AccountController.getTotalAccounts();
     const accountNumber = this.getAccountNumber();
-    const accountData = await AccountController.get(accountNumber);
 
-    const logoutPromises: Promise<any>[] = [];
-
-    for(let dcId = 1; dcId <= 5; dcId++) {
-      const key = `dc${dcId as TrueDcId}_auth_key` as const;
-      if(accountData[key]) {
-        logoutPromises.push(this.invokeApi('auth.logOut', {}, {dcId, ignoreErrors: true}));
-      }
-    }
+    const logoutPromises: Promise<any>[] = [
+      this.invokeApi('auth.logOut', {}, {ignoreErrors: true})
+    ];
 
     let wasCleared = false; // Prevent double logout 2 accounts in a row
     const clear = async() => {
@@ -550,8 +544,9 @@ export class ApiManager extends ApiManagerMethods {
     });
   }
 
-  public getNetworkerVoid(dcId: DcId) {
-    return this.getNetworker(dcId).then(noop, noop);
+  public getNetworkerVoid(_dcId: DcId) {
+    // 7eve9Chat: there are no MTProto connections to warm up
+    return Promise.resolve();
   }
 
   /**
@@ -618,6 +613,33 @@ export class ApiManager extends ApiManagerMethods {
   }
 
   public invokeApi<T extends keyof MethodDeclMap>(method: T, params: MethodDeclMap[T]['req'] = {}, options: InvokeApiOptions = {}): CancellablePromise<MethodDeclMap[T]['res']> {
+    // 7eve9Chat: every request is answered by the REST bridge, never by MTProto
+    return this.invokeSevenNine(method, params, options);
+  }
+
+  private invokeSevenNine<T extends keyof MethodDeclMap>(method: T, params: MethodDeclMap[T]['req'], options: InvokeApiOptions): CancellablePromise<MethodDeclMap[T]['res']> {
+    const deferred = deferredPromise<MethodDeclMap[T]['res']>();
+    this.sevenNineBridge.invoke(method, params, options).then(deferred.resolve.bind(deferred), (error: ApiError) => {
+      if(!error || !isObject(error)) {
+        error = makeError('ERROR_EMPTY');
+      }
+
+      if(error.code === 401 && error.type !== 'SESSION_PASSWORD_NEEDED' && !options.ignoreErrors) {
+        this.logOut();
+      }
+
+      // 406: a gap between the app and the backend, never shown to the user
+      if(error.code === 406) {
+        error.handled = true;
+      }
+
+      deferred.reject(error);
+    });
+
+    return deferred;
+  }
+
+  public invokeMTProto<T extends keyof MethodDeclMap>(method: T, params: MethodDeclMap[T]['req'] = {}, options: InvokeApiOptions = {}): CancellablePromise<MethodDeclMap[T]['res']> {
     // /////this.log('Invoke api', method, params, options);
 
     /* if(!this.lol) {

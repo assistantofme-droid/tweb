@@ -16,6 +16,8 @@ interface ImportMetaEnv {
   readonly VITE_MTPROTO_HAS_HTTP: string;
   readonly VITE_MTPROTO_HAS_WS: string;
   readonly VITE_SAFARI_PROXY_WEBSOCKET: string;
+  // 7eve9Chat backend origin (REST under /api, Socket.IO and /uploads at the root)
+  readonly VITE_SEVEN_NINE_ORIGIN?: string;
   // injected via `define` by vite.preview.config.ts; absent in every other build
   readonly VITE_PREVIEW?: boolean;
   // injected via `define` by vite.preview.config.ts when start-preview.sh is

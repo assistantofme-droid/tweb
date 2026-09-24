@@ -27,6 +27,7 @@ import {AppWebPagesManager} from '@appManagers/appWebPagesManager';
 import {AppLangPackManager} from '@appManagers/appLangPackManager';
 import {ApiFileManager} from '@appManagers/apiFileManager';
 import {ApiManager} from '@appManagers/apiManager';
+import {RestBridge} from '@lib/sevenNine/restBridge';
 import ctx from '@environment/ctx';
 import PeersStorage from '@lib/storages/peers';
 import ThumbsStorage from '@lib/storages/thumbs';
@@ -97,6 +98,7 @@ export default function createManagers(
     filtersStorage: new FiltersStorage,
     dialogsStorage: new DialogsStorage,
     apiManager: new ApiManager,
+    sevenNineBridge: new RestBridge,
     cryptoWorker: cryptoMessagePort,
     passwordManager: new PasswordManager,
     apiFileManager: new ApiFileManager,
