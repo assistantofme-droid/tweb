@@ -318,6 +318,8 @@ export default function systemHandlers(b: RestBridge): BridgeHandlers {
 
     'premium.getMyBoosts': () => ({_: 'premium.myBoosts', my_boosts: [], chats: [], users: []}),
     'premium.getBoostsList': () => ({_: 'premium.boostsList', pFlags: {}, count: 0, boosts: [], users: []}),
+    'premium.applyBoost': () => ({_: 'premium.myBoosts', my_boosts: [], chats: [], users: []}),
+    'account.getUniqueGiftChatThemes': () => ({_: 'account.chatThemes', hash: 0, themes: [], chats: [], users: []}),
     'payments.getStarsStatus': () => ({
       _: 'payments.starsStatus',
       pFlags: {},

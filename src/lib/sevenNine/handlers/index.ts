@@ -9,6 +9,7 @@ import chatsHandlers from '@lib/sevenNine/handlers/chats';
 import settingsHandlers from '@lib/sevenNine/handlers/settings';
 import stickersHandlers from '@lib/sevenNine/handlers/stickers';
 import botsHandlers from '@lib/sevenNine/handlers/bots';
+import storiesHandlers from '@lib/sevenNine/handlers/stories';
 
 export default function registerAllHandlers(b: RestBridge): BridgeHandlers {
   return Object.assign(
@@ -22,6 +23,7 @@ export default function registerAllHandlers(b: RestBridge): BridgeHandlers {
     chatsHandlers(b),
     settingsHandlers(b),
     stickersHandlers(b),
-    botsHandlers(b)
+    botsHandlers(b),
+    storiesHandlers(b)
   );
 }
