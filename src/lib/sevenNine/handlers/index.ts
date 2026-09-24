@@ -5,6 +5,7 @@ import businessHandlers from '@lib/sevenNine/handlers/business';
 import messagesHandlers from '@lib/sevenNine/handlers/messages';
 import usersHandlers from '@lib/sevenNine/handlers/users';
 import filesHandlers from '@lib/sevenNine/handlers/files';
+import chatsHandlers from '@lib/sevenNine/handlers/chats';
 
 export default function registerAllHandlers(b: RestBridge): BridgeHandlers {
   return Object.assign(
@@ -14,6 +15,7 @@ export default function registerAllHandlers(b: RestBridge): BridgeHandlers {
     businessHandlers(b),
     messagesHandlers(b),
     usersHandlers(b),
-    filesHandlers(b)
+    filesHandlers(b),
+    chatsHandlers(b)
   );
 }

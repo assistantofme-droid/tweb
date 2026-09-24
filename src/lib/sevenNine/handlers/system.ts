@@ -329,7 +329,6 @@ export default function systemHandlers(b: RestBridge): BridgeHandlers {
     'contacts.getBirthdays': () => ({_: 'contacts.contactBirthdays', contacts: [], users: []}),
     'chatlists.getChatlistUpdates': () => ({_: 'chatlists.chatlistUpdates', missing_peers: [], chats: [], users: []}),
     'stories.getAlbums': () => ({_: 'stories.albums', hash: 1, albums: []}),
-    'users.getSavedMusic': () => ({_: 'users.savedMusic', count: 0, documents: []}),
     'communities.getJoinedCommunities': () => ({_: 'communities.joinedCommunities', communities: [], chats: [], users: []} as any)
   };
 }
