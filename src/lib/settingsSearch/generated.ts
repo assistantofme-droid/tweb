@@ -449,6 +449,7 @@ const generated: GeneratedSettingsSearchData = {
     {path: 'power-saving/stickers', sectionId: 'AppPowerSavingTab', highlight: 'LiteMode.Key.stickers.Title'},
     {path: 'power-saving/transitions', sectionId: 'AppPowerSavingTab', highlight: 'LiteMode.Key.animations.Title'},
     {path: 'power-saving/videos', sectionId: 'AppPowerSavingTab', highlight: 'LiteMode.Key.video.Title'},
+    {path: 'premium', sectionId: 'AppSettingsTab', highlight: 'Premium.Boarding.Title'},
     {path: 'privacy', sectionId: 'AppPrivacyAndSecurityTab'},
     {path: 'privacy/2sv', sectionId: 'AppTwoStepVerificationTab'},
     {path: 'privacy/2sv/change', sectionId: 'AppTwoStepVerificationTab', highlight: 'TwoStepAuth.ChangePassword'},

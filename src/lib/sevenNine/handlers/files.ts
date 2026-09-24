@@ -6,7 +6,7 @@
 import type {InputFileLocation, InputPhoto, MessageMedia, Photo, UploadFile} from '@layer';
 import type {BridgeHandlers, Json, RestBridge} from '@lib/sevenNine/restBridge';
 import tsNow from '@helpers/tsNow';
-import {RestException, restError, tlError} from '@lib/sevenNine/errors';
+import {restError, tlError, toTlError} from '@lib/sevenNine/errors';
 import {jsonStr} from '@lib/sevenNine/restBridge';
 
 export const EXTENSION_BY_MIME: Record<string, string> = {
@@ -186,7 +186,7 @@ export default function filesHandlers(b: RestBridge): BridgeHandlers {
       }
 
       return uploadProfilePhoto(params).catch((err) => {
-        throw err instanceof RestException ? restError(err.statusCode, err.serverMessage) : err;
+        throw toTlError(err);
       });
     },
 

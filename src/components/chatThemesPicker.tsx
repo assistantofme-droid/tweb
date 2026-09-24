@@ -14,6 +14,7 @@ import themeController from '@helpers/themeController';
 import liteMode from '@helpers/liteMode';
 import LottiePlayer from '@lib/lottie/lottiePlayer';
 import wrapStickerEmoji from '@components/wrappers/stickerEmoji';
+import noop from '@helpers/noop';
 
 type ThemeItem = {
   container: HTMLElement;
@@ -228,7 +229,7 @@ export default function ChatThemesPicker(props: ChatThemesPickerProps) {
           group: 'none'
         }).then(({render}) => render).then((player) => {
           k.player = player as LottiePlayer;
-        });
+        }, noop); // no animated emoji set on this backend: the tile goes without
       }
 
       const bubble = document.createElement('div');

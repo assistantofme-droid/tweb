@@ -15,7 +15,7 @@ import type {
   UserFull
 } from '@layer';
 import type {BridgeHandlers, Json, RestBridge} from '@lib/sevenNine/restBridge';
-import {RestException, restError, tlError} from '@lib/sevenNine/errors';
+import {RestException, tlError, toTlError} from '@lib/sevenNine/errors';
 import {idFromMongoId, isMongoId} from '@lib/sevenNine/ids';
 import {jsonStr} from '@lib/sevenNine/restBridge';
 
@@ -319,7 +319,7 @@ export default function businessHandlers(b: RestBridge): BridgeHandlers {
           const sent = await b.http.request('POST', '/messages', body);
           b.rememberSentConversation(peer, sent);
         } catch(err) {
-          throw err instanceof RestException ? restError(err.statusCode, err.serverMessage) : err;
+          throw toTlError(err);
         }
       }
 

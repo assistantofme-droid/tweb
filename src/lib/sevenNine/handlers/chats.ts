@@ -23,7 +23,7 @@ import type {
 } from '@layer';
 import type {BridgeHandlers, Json, RestBridge} from '@lib/sevenNine/restBridge';
 import tsNow from '@helpers/tsNow';
-import {RestException, restError, tlError} from '@lib/sevenNine/errors';
+import {RestException, tlError, toTlError} from '@lib/sevenNine/errors';
 import {idFromMongoId, isMongoId, parseIsoToEpochSeconds} from '@lib/sevenNine/ids';
 import {SITE_LINK} from '@lib/sevenNine/links';
 import {idListContains, jsonStr, refId} from '@lib/sevenNine/restBridge';
@@ -53,7 +53,7 @@ export default function chatsHandlers(b: RestBridge): BridgeHandlers {
   };
 
   const rethrow = (err: any): never => {
-    throw err instanceof RestException ? restError(err.statusCode, err.serverMessage) : err;
+    throw toTlError(err);
   };
 
   /** the conversation again, as updates carrying the fresh chat */

@@ -24,7 +24,7 @@ import type {
 import type {BridgeHandlers, Json, RestBridge} from '@lib/sevenNine/restBridge';
 import tsNow from '@helpers/tsNow';
 import getServerMessageId from '@appManagers/utils/messageId/getServerMessageId';
-import {restError, RestException, tlError} from '@lib/sevenNine/errors';
+import {tlError, toTlError} from '@lib/sevenNine/errors';
 import {idFromMongoId, idFromMongoIdInt32, isMongoId, parseIsoToEpochSeconds} from '@lib/sevenNine/ids';
 import {idListContains, jsonStr, refId} from '@lib/sevenNine/restBridge';
 
@@ -428,23 +428,6 @@ export default function messagesHandlers(b: RestBridge): BridgeHandlers {
 
   b.sendMediaMessage = sendOneMedia;
 
-  const sentUpdates = (sent: Json[], peer: Peer, randomIds: (string | number)[]) => {
-    const users: User[] = [];
-    const updates: Update[] = [];
-    sent.forEach((m, i) => {
-      if(!m?._id) return;
-      const message = b.buildAnyMessage(m, peer);
-      b.addSender(m, users);
-      if(randomIds[i] !== undefined) {
-        updates.push({_: 'updateMessageID', id: message.id, random_id: randomIds[i]});
-      }
-
-      updates.push(b.newMessageUpdate(message));
-    });
-
-    return b.emptyUpdates(users, [], updates);
-  };
-
   const deleteMessages = async(ids: number[], forEveryone: boolean) => {
     for(const id of ids) {
       const mongoId = await b.getMessageMongoId(id);
@@ -749,7 +732,7 @@ export default function messagesHandlers(b: RestBridge): BridgeHandlers {
       try {
         sent = await b.http.request('POST', '/messages', body);
       } catch(err) {
-        throw err instanceof RestException ? restError(err.statusCode, err.serverMessage) : err;
+        throw toTlError(err);
       }
 
       b.rememberSentConversation(params.peer, sent);
@@ -791,9 +774,9 @@ export default function messagesHandlers(b: RestBridge): BridgeHandlers {
       }
 
       const sent = await sendOneMedia(params.peer, params.media, params.message, params.reply_to, params.entities).catch((err) => {
-        throw err instanceof RestException ? restError(err.statusCode, err.serverMessage) : err;
+        throw toTlError(err);
       });
-      return sentUpdates([sent], b.peerFromInput(params.peer), [params.random_id]);
+      return b.sentMessageUpdates([sent], b.peerFromInput(params.peer), [params.random_id]);
     },
 
     'messages.sendMultiMedia': async(params) => {
@@ -806,7 +789,7 @@ export default function messagesHandlers(b: RestBridge): BridgeHandlers {
         sent.push(await sendOneMedia(params.peer, single.media, single.message, params.reply_to, single.entities));
       }
 
-      return sentUpdates(sent, b.peerFromInput(params.peer), params.multi_media.map((single) => single.random_id));
+      return b.sentMessageUpdates(sent, b.peerFromInput(params.peer), params.multi_media.map((single) => single.random_id));
     },
 
     'messages.forwardMessages': async(params) => {
@@ -827,7 +810,7 @@ export default function messagesHandlers(b: RestBridge): BridgeHandlers {
         sent.push(forwarded);
       }
 
-      return sentUpdates(sent, b.peerFromInput(params.to_peer), params.random_id);
+      return b.sentMessageUpdates(sent, b.peerFromInput(params.to_peer), params.random_id);
     },
 
     'messages.editMessage': async(params) => {
@@ -859,7 +842,7 @@ export default function messagesHandlers(b: RestBridge): BridgeHandlers {
       }
 
       const edited = await b.http.request('PUT', '/messages/' + mongoId, body).catch((err) => {
-        throw err instanceof RestException ? restError(err.statusCode, err.serverMessage) : err;
+        throw toTlError(err);
       });
       const peer = b.peerFromInput(params.peer);
       const users: User[] = [];

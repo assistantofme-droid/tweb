@@ -2125,6 +2125,24 @@ export class RestBridge extends AppManager {
     return {_: 'messages.affectedHistory', pts: 0, pts_count: 0, offset: 0};
   }
 
+  /** what the app expects back for messages this client just sent: their ids, then the messages */
+  public sentMessageUpdates(sent: Json[], peer: Peer, randomIds: (string | number)[]) {
+    const users: User[] = [];
+    const updates: Update[] = [];
+    sent.forEach((m, i) => {
+      if(!m?._id) return;
+      const message = this.buildAnyMessage(m, peer);
+      this.addSender(m, users);
+      if(randomIds[i] !== undefined) {
+        updates.push({_: 'updateMessageID', id: message.id, random_id: randomIds[i]});
+      }
+
+      updates.push(this.newMessageUpdate(message));
+    });
+
+    return this.emptyUpdates(users, [], updates);
+  }
+
   public emptyUpdates(users: User[] = [], chats: Chat[] = [], updates: Update[] = []): Updates.updates {
     return {_: 'updates', updates, users, chats, date: tsNow(true), seq: 0};
   }

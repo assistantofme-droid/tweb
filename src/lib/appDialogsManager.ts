@@ -1695,7 +1695,7 @@ export class AppDialogsManager {
         emoji: emoji,
         width: size,
         height: size
-      });
+      }).catch(noop);
 
       placeholderContainer.prepend(div);
 

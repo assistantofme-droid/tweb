@@ -454,7 +454,9 @@ async function moveStoragesToMultiAccountFormat() {
 }
 
 async function checkIfHasMultiAccount() {
-  return !!(await AccountController.get(1))[`dc${App.baseDcId}_auth_key`];
+  const accountData = await AccountController.get(1);
+  // a 7eve9Chat session has no MTProto auth key: its token marks the current format
+  return !!(accountData[`dc${App.baseDcId}_auth_key`] || accountData.seven_nine_token);
 }
 
 function deleteOldDatabase() {

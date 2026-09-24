@@ -6,7 +6,7 @@
 import type {Chat, EmojiStatus, InputUser, User, UserFull} from '@layer';
 import type {BridgeHandlers, Json, RestBridge} from '@lib/sevenNine/restBridge';
 import tsNow from '@helpers/tsNow';
-import {RestException, restError, tlError} from '@lib/sevenNine/errors';
+import {restError, RestException, tlError, toTlError} from '@lib/sevenNine/errors';
 import {isMongoId} from '@lib/sevenNine/ids';
 import {applyBusinessInfo} from '@lib/sevenNine/handlers/business';
 import {idListContains, joinName, jsonStr, normalizePhone, refId} from '@lib/sevenNine/restBridge';
@@ -102,7 +102,7 @@ export default function usersHandlers(b: RestBridge): BridgeHandlers {
 
     'users.getFullUser': async({id}) => {
       const userJson = await fetchUserJson(id).catch((err) => {
-        throw err instanceof RestException ? restError(err.statusCode, err.serverMessage) : err;
+        throw toTlError(err);
       });
       const self = String(userJson._id) === b.selfMongoId;
       const user = b.buildUser(userJson, self);
@@ -441,7 +441,7 @@ export default function usersHandlers(b: RestBridge): BridgeHandlers {
       // the backend ignores an empty "about": a space clears the bio
       if(about !== undefined) body.about = about || ' ';
       return updateProfile(body).catch((err) => {
-        throw err instanceof RestException ? restError(err.statusCode, err.serverMessage) : err;
+        throw toTlError(err);
       });
     },
 

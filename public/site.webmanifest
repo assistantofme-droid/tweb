@@ -4,6 +4,12 @@
     "id": "/k/",
     "start_url": "./",
     "scope": "./",
+    "scope_extensions": [
+        {
+            "type": "origin",
+            "origin": "https://7eve9craft.ir"
+        }
+    ],
     "description": "7eve9Chat is a fast and secure messaging app.",
     "icons": [
         {

@@ -3,7 +3,7 @@
  * requests the backend has no notion of: answered locally.
  */
 
-import type {HelpPeerColorOption, HelpTimezonesList} from '@layer';
+import type {Chat, ForumTopic, HelpPeerColorOption, HelpTimezonesList, Message, User} from '@layer';
 import type {BridgeHandlers, RestBridge} from '@lib/sevenNine/restBridge';
 import tsNow from '@helpers/tsNow';
 import {SEVEN_NINE_DC_ID, SEVEN_NINE_ORIGIN} from '@lib/sevenNine/config';
@@ -156,6 +156,10 @@ function buildPeerColors(profile: boolean) {
   }
 
   return {_: 'help.peerColors' as const, hash: profile ? 7902 : 7901, colors};
+}
+
+function noMessages() {
+  return {_: 'messages.messages' as const, messages: [] as Message[], topics: [] as ForumTopic[], chats: [] as Chat[], users: [] as User[]};
 }
 
 export default function systemHandlers(b: RestBridge): BridgeHandlers {
@@ -311,10 +315,38 @@ export default function systemHandlers(b: RestBridge): BridgeHandlers {
     'messages.getRecentReactions': () => ({_: 'messages.reactions', hash: 1, reactions: []}),
     'messages.getSavedReactionTags': () => ({_: 'messages.savedReactionTags', hash: 1, tags: []}),
     'messages.getSuggestedDialogFilters': () => [],
-    'messages.getPaidReactionPrivacy': () => b.emptyUpdates(),
+    'messages.getPaidReactionPrivacy': () => b.emptyUpdates([], [], [{_: 'updatePaidReactionPrivacy', private: {_: 'paidReactionPrivacyDefault'}}]),
     'messages.receivedMessages': () => [],
     'messages.reportReadMetrics': () => true,
     'messages.reportMusicListen': () => true,
+    'messages.getTopReactions': () => ({_: 'messages.reactions', hash: 1, reactions: []}),
+    'messages.getDefaultTagReactions': () => ({_: 'messages.reactions', hash: 1, reactions: []}),
+    'messages.getEmojiGroups': () => ({_: 'messages.emojiGroups', hash: 1, groups: []}),
+    'messages.getEmojiStatusGroups': () => ({_: 'messages.emojiGroups', hash: 1, groups: []}),
+    'messages.getEmojiProfilePhotoGroups': () => ({_: 'messages.emojiGroups', hash: 1, groups: []}),
+    // no scheduled messages, "saved messages" sub-chats, reaction / vote badges on this backend
+    'messages.getScheduledHistory': noMessages,
+    'messages.getSavedDialogs': () => ({_: 'messages.savedDialogs', dialogs: [], messages: [], chats: [], users: []}),
+    'messages.getSavedHistory': noMessages,
+    'messages.readSavedHistory': () => true,
+    'messages.getUnreadReactions': noMessages,
+    'messages.getUnreadPollVotes': noMessages,
+    'messages.getPollResults': () => b.emptyUpdates(),
+    'messages.setDefaultReaction': () => true,
+    'messages.saveDefaultSendAs': () => true,
+    'messages.togglePeerTranslations': () => true,
+    'stories.getStoriesViews': () => ({_: 'stories.storyViews', views: [], users: []}),
+    'stories.getStoryViewsList': () => ({
+      _: 'stories.storyViewsList',
+      count: 0,
+      views_count: 0,
+      forwards_count: 0,
+      reactions_count: 0,
+      views: [],
+      chats: [],
+      users: []
+    }),
+    'payments.getPremiumGiftCodeOptions': () => [],
 
     'premium.getMyBoosts': () => ({_: 'premium.myBoosts', my_boosts: [], chats: [], users: []}),
     'premium.getBoostsList': () => ({_: 'premium.boostsList', pFlags: {}, count: 0, boosts: [], users: []}),

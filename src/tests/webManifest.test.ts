@@ -11,9 +11,9 @@ type WebManifest = {
   }>
 };
 
+// the 7eve9Chat site, whose /username, /gp, /cl, /pv and /invite links the app opens
 const EXPECTED_SCOPE_EXTENSIONS = [
-  {type: 'origin', origin: 'https://t.me'},
-  {type: 'origin', origin: 'https://telegram.me'}
+  {type: 'origin', origin: 'https://7eve9craft.ir'}
 ];
 const EXPECTED_MANIFEST_ID = 'https://web.telegram.org/k/';
 
@@ -26,7 +26,7 @@ const manifests = [
 }));
 
 describe('PWA web manifests', () => {
-  test.each(manifests)('$fileName has a stable identity and Telegram link scopes', ({manifest}) => {
+  test.each(manifests)('$fileName has a stable identity and site link scopes', ({manifest}) => {
     expect(manifest.id).toBe('/k/');
     expect(new URL(manifest.id, 'https://web.telegram.org/').href).toBe(EXPECTED_MANIFEST_ID);
     expect(manifest.start_url).toBe('./');

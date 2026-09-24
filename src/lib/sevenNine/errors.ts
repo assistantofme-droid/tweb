@@ -84,6 +84,11 @@ export function restError(statusCode: number, message: string): ApiError {
   return tlError(statusCode >= 500 ? 406 : statusCode, 'REQUEST_FAILED', m);
 }
 
+/** A backend failure as the TL error the app understands; anything else unchanged */
+export function toTlError(err: any) {
+  return err instanceof RestException ? restError(err.statusCode, err.serverMessage) : err;
+}
+
 export function isSilentError(error: ApiError) {
   const type = error?.type as string;
   return !!type && (

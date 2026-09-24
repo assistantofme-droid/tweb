@@ -20,7 +20,7 @@ import type {
   User
 } from '@layer';
 import type {BridgeHandlers, Json, RestBridge} from '@lib/sevenNine/restBridge';
-import {RestException, restError, tlError} from '@lib/sevenNine/errors';
+import {RestException, tlError, toTlError} from '@lib/sevenNine/errors';
 import {idForUrl} from '@lib/sevenNine/ids';
 import {EXTENSION_BY_MIME} from '@lib/sevenNine/handlers/files';
 import {jsonStr} from '@lib/sevenNine/restBridge';
@@ -140,13 +140,7 @@ export default function botsHandlers(b: RestBridge): BridgeHandlers {
 
   const sentMessageUpdates = (sent: Json, peer: InputPeer, randomId: string | number) => {
     b.rememberSentConversation(peer, sent);
-    const message = b.buildAnyMessage(sent, b.peerFromInput(peer));
-    const users: User[] = [];
-    b.addSender(sent, users);
-    return b.emptyUpdates(users, [], [
-      {_: 'updateMessageID', id: message.id, random_id: randomId},
-      b.newMessageUpdate(message)
-    ]);
+    return b.sentMessageUpdates([sent], b.peerFromInput(peer), [randomId]);
   };
 
   const requestWebApp = async(options: {
@@ -217,7 +211,7 @@ export default function botsHandlers(b: RestBridge): BridgeHandlers {
       const body: Json = {text: '/start' + (start_param ? ' ' + start_param : ''), type: 'text'};
       await b.putMessageTarget(body, peer);
       const sent = await b.http.request('POST', '/messages', body).catch((err) => {
-        throw err instanceof RestException ? restError(err.statusCode, err.serverMessage) : err;
+        throw toTlError(err);
       });
       return sentMessageUpdates(sent, peer, random_id);
     },
@@ -320,7 +314,7 @@ export default function botsHandlers(b: RestBridge): BridgeHandlers {
       }
 
       const sent = await b.http.request('POST', '/botapi/inline/send', body).catch((err) => {
-        throw err instanceof RestException ? restError(err.statusCode, err.serverMessage) : err;
+        throw toTlError(err);
       });
       return sentMessageUpdates(sent, peer, random_id);
     },

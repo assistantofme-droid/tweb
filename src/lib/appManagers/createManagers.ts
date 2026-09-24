@@ -161,6 +161,8 @@ export default function createManagers(
   const promises: Array<Promise<(() => void) | void> | void>[] = [];
   let names = Object.keys(managers) as (keyof T)[];
   names.unshift(
+    // every request goes through it: ready before any manager's after() calls the API
+    'sevenNineBridge',
     'appCommunitiesManager',
     'appUsersManager',
     'appChatsManager',
