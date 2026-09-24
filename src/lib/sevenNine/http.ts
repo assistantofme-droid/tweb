@@ -27,7 +27,8 @@ function isOwnSendPath(method: string, path: string) {
   return method === 'POST' && (
     path === '/messages' ||
     path === '/messages/forward' ||
-    path === '/business/quick-replies/messages'
+    path === '/business/quick-replies/messages' ||
+    path === '/botapi/inline/send'
   );
 }
 

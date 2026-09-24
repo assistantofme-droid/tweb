@@ -708,6 +708,19 @@ export default function chatsHandlers(b: RestBridge): BridgeHandlers {
       return b.emptyUpdates([], chats, [{_: 'updateChannel', channel_id: b.chatTlIdOf(channel)}]);
     },
 
+    // a member's custom title ("rank")
+    'messages.editChatParticipantRank': async({peer, participant, rank}) => {
+      const convId = await conversationCall(peer, 'PUT', '/custom-title', {
+        userId: b.userMongoIdOf(participant) || '',
+        customTitle: rank || ''
+      });
+      return freshChatUpdates(convId);
+    },
+
+    // not on this backend: accepted, nothing changes
+    'channels.toggleAntiSpam': () => b.emptyUpdates(),
+    'channels.toggleAutotranslation': () => b.emptyUpdates(),
+
     'channels.toggleSlowMode': async({channel, seconds}) => {
       const convId = await conversationCall(channel, 'PUT', '/slow-mode', {slowModeInterval: seconds});
       return freshChatUpdates(convId);

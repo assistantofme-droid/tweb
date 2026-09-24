@@ -9,7 +9,7 @@ import tsNow from '@helpers/tsNow';
 import {RestException, restError, tlError} from '@lib/sevenNine/errors';
 import {jsonStr} from '@lib/sevenNine/restBridge';
 
-const EXTENSION_BY_MIME: Record<string, string> = {
+export const EXTENSION_BY_MIME: Record<string, string> = {
   'image/jpeg': '.jpg',
   'image/png': '.png',
   'image/webp': '.webp',
