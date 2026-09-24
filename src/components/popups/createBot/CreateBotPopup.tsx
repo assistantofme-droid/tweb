@@ -1,3 +1,4 @@
+import {SITE_LINK_SHORT} from '@lib/sevenNine/links';
 import MediaHeader from '@components/mediaHeader';
 import styles from '@components/popups/createBot/createBot.module.scss';
 import PopupElement from '@components/popups/indexTsx';
@@ -207,7 +208,7 @@ const CreateBotPopup = (props: CreateBotPopupProps) => {
               key="CreateBot.Link"
               args={[
                 <span class={styles.linkInfoLink}>
-                  t.me/{fullUsername()}
+                  {SITE_LINK_SHORT}{fullUsername()}
                 </span>
               ]}
             />

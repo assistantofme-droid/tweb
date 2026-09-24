@@ -33,6 +33,7 @@ import formatFormattedDate from '@helpers/date/formatFormattedDate';
 import formatRelativeTime from '@helpers/date/formatRelativeTime';
 import tsNow from '@helpers/tsNow';
 import filterDisabledEntities, {markMessageLinkEntity} from '@lib/richTextProcessor/filterDisabledEntities';
+import {SITE_LINK_SHORT} from '@lib/sevenNine/links';
 
 export type WrapRichTextOptions = Partial<{
   entities: MessageEntity[],
@@ -673,7 +674,7 @@ export default function wrapRichText(text: string, options: WrapRichTextOptions 
         if(!options.noLinks) {
           const username = fullEntityText.slice(1);
 
-          element = wrapTelegramUrlToAnchor('t.me/' + username);
+          element = wrapTelegramUrlToAnchor(SITE_LINK_SHORT + username);
           element.className = 'mention';
 
           // insertPart(entity, `<a class="mention" href="${contextUrl.replace('{1}', encodeURIComponent(username))}"${contextExternal ? ' target="_blank" rel="noopener noreferrer"' : ''}>`, '</a>');

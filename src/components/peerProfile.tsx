@@ -65,6 +65,7 @@ import {showPeerReport} from '@components/popups/reportAd';
 import CommunityPeerDialogList
 from '@components/communities/communityPeerDialogList';
 import getPeerId from '@appManagers/utils/peers/getPeerId';
+import {SITE_LINK_SHORT} from '@lib/sevenNine/links';
 
 keepMe(ripple);
 
@@ -989,7 +990,7 @@ PeerProfile.Link = () => {
 
     const usernames = getPeerActiveUsernames(context.peer as Chat.channel);
     if(context.isTopic) {
-      let url = 't.me/';
+      let url = SITE_LINK_SHORT;
       const threadId = getServerMessageId(context.threadId);
       const username = usernames[0];
       if(username) {
@@ -1003,7 +1004,7 @@ PeerProfile.Link = () => {
 
     if(usernames.length) {
       return {
-        url: 't.me/' + usernames[0],
+        url: SITE_LINK_SHORT + usernames[0],
         also: getUsernamesAlso(usernames)
       };
     }
@@ -1011,7 +1012,7 @@ PeerProfile.Link = () => {
     const exportedInvite = (context.fullPeer as ChatFull.channelFull)?.exported_invite;
     if(exportedInvite?._ === 'chatInviteExported') {
       return {
-        url: exportedInvite.link.slice(exportedInvite.link.indexOf('t.me/'))
+        url: exportedInvite.link.slice(exportedInvite.link.indexOf(SITE_LINK_SHORT))
       };
     }
   });

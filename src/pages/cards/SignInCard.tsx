@@ -3,7 +3,6 @@ import {createSignal, JSX, onCleanup, onMount} from 'solid-js';
 import Button from '@components/buttonTsx';
 import CountryInputField from '@components/countryInputField';
 import LanguageChangeButton from '@components/languageChangeButton';
-import PasskeyLoginButton from '@components/passkeyLoginButton';
 import MediaHeader from '@components/mediaHeader';
 import TelInputField from '@components/telInputField';
 import IS_TOUCH_SUPPORTED from '@environment/touchSupport';
@@ -255,13 +254,6 @@ export default function SignInCard(_props: {spec: Spec}) {
         </Button>
         {getCurrentAccount() === 1 && <LanguageChangeButton />}
       </div>
-      <Button
-        class="btn-primary btn-secondary btn-primary-transparent primary"
-        disabled={submitting()}
-        onClick={() => navigate({name: 'signQR'})}
-        text="Login.QR.Login"
-      />
-      <PasskeyLoginButton disabled={submitting()} />
     </AuthCard>
   );
 }

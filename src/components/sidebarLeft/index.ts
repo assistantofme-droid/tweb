@@ -1,4 +1,5 @@
 import {createEffect, createRoot, createSignal, on} from 'solid-js';
+import {SITE_LINK} from '@lib/sevenNine/links';
 import appImManager from '@lib/appImManager';
 import rootScope from '@lib/rootScope';
 import {createSearchGroup, SearchGroup} from '@components/searchGroup';
@@ -970,16 +971,10 @@ export class AppSidebarLeft extends SidebarSlider {
       separator: !App.isMainDomain
     }, {
       icon: 'bug',
-      text: 'ReportBug',
+      text: 'AskAQuestion',
       onClick: () => {
-        const a = document.createElement('a');
-        setBlankToAnchor(a);
-        a.href = 'https://bugs.telegram.org/?tag_ids=40&sort=time';
-        document.body.append(a);
-        a.click();
-        setTimeout(() => {
-          a.remove();
-        }, 0);
+        // 7eve9Chat support: a chat with @admin (as in the Android client)
+        appImManager.openUrl(SITE_LINK + 'admin');
       }
     }, {
       icon: 'plusround',
@@ -1803,7 +1798,7 @@ function getVersionLink() {
   });
   const t = document.createElement('span');
   t.classList.add('btn-menu-footer-text');
-  t.textContent = `Telegram Web${App.suffix} ${App.version} (${App.build})`;
+  t.textContent = `7eve9Chat Web ${App.version} (${App.build})`;
   btnMenuFooter.append(t);
 
   return btnMenuFooter;

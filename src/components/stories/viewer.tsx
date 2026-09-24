@@ -108,6 +108,7 @@ import StoryWeatherArea, {toggleTemperatureUnit} from '@components/stories/weath
 import StoryMusicPanel, {STORY_MUSIC_PANEL_CLASS} from '@components/stories/musicPanel';
 import getAudioTitles from '@appManagers/utils/docs/getAudioTitles';
 import type {MyDocument} from '@appManagers/appDocsManager';
+import {SITE_LINK} from '@lib/sevenNine/links';
 
 export const STORY_DURATION = 5e3;
 const STORY_HEADER_AVATAR_SIZE = 32;
@@ -1872,7 +1873,7 @@ const Stories = (props: {
   );
 
   const copyLink = () => {
-    copyTextToClipboard(`https://t.me/${getPeerActiveUsernames(peer)[0]}/s/${currentStory().id}`);
+    copyTextToClipboard(`${SITE_LINK}${getPeerActiveUsernames(peer)[0]}/s/${currentStory().id}`);
     toastNew({
       langPackKey: 'LinkCopied'
     });

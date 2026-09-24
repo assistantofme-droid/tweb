@@ -58,6 +58,7 @@ import {ConfettiContainer, ConfettiRef} from '@components/confetti';
 import {PreloaderTsx} from '@components/putPreloader';
 import {showCreateStarGiftOfferPopup} from '@components/popups/createStarGiftOffer';
 import {getCanManagePeerGifts} from '@components/stargifts/canManageGifts';
+import {SITE_LINK} from '@lib/sevenNine/links';
 
 function AttributeTableButton(props: {rarity: StarGiftAttributeRarity}) {
   if(props.rarity._ !== 'starGiftAttributeRarity') {
@@ -942,7 +943,7 @@ export default function showStarGiftInfoPopup(options: {
 
     const handleShare = () => {
       showSharingPicker2Popup().then(({peerId, threadId, monoforumThreadId}) => {
-        rootScope.managers.appMessagesManager.sendText({peerId, threadId, replyToMonoforumPeerId: monoforumThreadId, text: 'https://t.me/nft/' + (gift as StarGift.starGiftUnique).slug});
+        rootScope.managers.appMessagesManager.sendText({peerId, threadId, replyToMonoforumPeerId: monoforumThreadId, text: SITE_LINK + 'nft/' + (gift as StarGift.starGiftUnique).slug});
         appImManager.setInnerPeer({peerId, threadId, monoforumThreadId});
         context.hide();
       });
@@ -1106,7 +1107,7 @@ export default function showStarGiftInfoPopup(options: {
                 icon: 'link',
                 text: 'CopyLink',
                 onClick: () => {
-                  copyTextToClipboard('https://t.me/nft/' + (gift as StarGift.starGiftUnique).slug);
+                  copyTextToClipboard(SITE_LINK + 'nft/' + (gift as StarGift.starGiftUnique).slug);
                   toastNew({langPackKey: 'LinkCopied'});
                 }
               }

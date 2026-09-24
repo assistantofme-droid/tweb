@@ -25,6 +25,7 @@ import showChooseGiftPopup from '@components/popups/chooseGiftPopup';
 import {MyStarGift} from '@appManagers/appGiftsManager';
 import {copyTextToClipboard} from '@helpers/clipboard';
 import {toastNew} from '@components/toast';
+import {SITE_LINK} from '@lib/sevenNine/links';
 
 async function openCreateCollectionPopup({actions, peerId}: {
   actions: StarGiftsProfileActions
@@ -338,7 +339,7 @@ export function StarGiftsProfileTab(props: {
                 text: 'CopyLink',
                 onClick: async() => {
                   const username = await rootScope.managers.appPeersManager.getPeerUsername(props.peerId)
-                  copyTextToClipboard(`https://t.me/${username}/c/${id}`)
+                  copyTextToClipboard(`${SITE_LINK}${username}/c/${id}`)
                   toastNew({langPackKey: 'LinkCopied'})
                 },
                 verify: async() => {

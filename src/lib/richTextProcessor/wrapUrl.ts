@@ -3,6 +3,7 @@ import {PHONE_NUMBER_REG_EXP} from '.';
 import {MOUNT_CLASS_TO} from '@config/debug';
 import {normalizeUrlProtocol} from '@lib/richTextProcessor/matchUrlProtocol';
 import matchTelegramUrlHost, {matchUrlHost, TELESCOPE_LINK_HOST} from '@lib/richTextProcessor/matchTelegramUrlHost';
+import {mapSiteUrl} from '@lib/sevenNine/links';
 
 export default function wrapUrl(url: string, safe?: boolean) {
   url = normalizeUrlProtocol(url);
@@ -15,6 +16,9 @@ export default function wrapUrl(url: string, safe?: boolean) {
   try {
     parsedUrl = new URL(url);
   } catch(err) {}
+
+  // 7eve9Chat site links open inside the app like t.me links do
+  parsedUrl = mapSiteUrl(parsedUrl) || parsedUrl;
 
   const telegramUrlMatch = parsedUrl && matchTelegramUrlHost(parsedUrl);
 

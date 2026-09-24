@@ -29,6 +29,7 @@ from '@components/sidebarLeft/tabs/purchaseUsernameCaption';
 import type {User} from '@layer';
 import {i18n, LangPackKey} from '@lib/langPack';
 import wrapUrl from '@lib/richTextProcessor/wrapUrl';
+import {SITE_LINK_SHORT} from '@lib/sevenNine/links';
 
 async function loadEditBotData(
   tab: InstanceType<typeof AppEditBotTab>,
@@ -287,7 +288,7 @@ function BotFatherButton(props: {
   icon: Icon,
   text: LangPackKey
 }) {
-  const url = 't.me/botfather?start=' + props.username +
+  const url = SITE_LINK_SHORT + 'botfather?start=' + props.username +
     (props.suffix ? '-' + props.suffix : '');
   const wrapped = wrapUrl(url);
 

@@ -8,6 +8,7 @@ import hasRights from '@lib/appManagers/utils/chats/hasRights';
 import apiManagerProxy from '@lib/apiManagerProxy';
 import AppSelectPeers from '@components/appSelectPeers';
 import {InviteLink} from '@components/sidebarLeft/tabs/inviteLink';
+import {SITE_LINK_SHORT} from '@lib/sevenNine/links';
 
 export type ChatInvite = ExportedChatInvite.chatInviteExported;
 
@@ -54,7 +55,7 @@ export class ChatInviteLink extends InviteLink {
   public setChatInvite(chatInvite: ChatInvite | string) {
     const isUsername = typeof(chatInvite) === 'string';
     const username = typeof(chatInvite) === 'string' ? chatInvite : undefined;
-    this.setUrl(isUsername ? 't.me/' + username : chatInvite.link);
+    this.setUrl(isUsername ? SITE_LINK_SHORT + username : chatInvite.link);
 
     if(this.subtitle) {
       if(!isUsername && chatInvite?.usage) {

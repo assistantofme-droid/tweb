@@ -27,6 +27,7 @@ import {usePromiseCollector} from '@components/solidJsTabs/promiseCollector';
 import {useHotReloadGuard} from '@lib/solidjs/hotReloadGuard';
 import {openUserPermissionsTab, type AppChatTypeTab} from '@components/solidJsTabs/tabs';
 import anchorCallback from '@helpers/dom/anchorCallback';
+import {SITE_LINK_SHORT} from '@lib/sevenNine/links';
 
 const ChatType: Component = () => {
   const [tab] = useSuperTab<typeof AppChatTypeTab>();
@@ -138,7 +139,7 @@ const ChatType: Component = () => {
     const inputWrapper = document.createElement('div');
     inputWrapper.classList.add('input-wrapper');
 
-    const placeholder = 't.me/';
+    const placeholder = SITE_LINK_SHORT;
 
     let changedPrivacy: boolean, changedJoinToSend: boolean, changedJoinRequest: boolean;
     onChange = () => {

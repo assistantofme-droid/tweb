@@ -1,5 +1,6 @@
 import wrapUrl from '@lib/richTextProcessor/wrapUrl';
 import matchTelegramUrlHost from '@lib/richTextProcessor/matchTelegramUrlHost';
+import {mapSiteUrl} from '@lib/sevenNine/links';
 import cancelEvent from '@helpers/dom/cancelEvent';
 import parseUriParams from '@helpers/string/parseUriParams';
 
@@ -67,7 +68,14 @@ export default function addAnchorListener<
     let pathnameParams: any[];
     let uriParams: any;
 
-    const u = new URL(href);
+    let u = new URL(href);
+    // 7eve9Chat site links -> the t.me form the handlers read
+    const siteUrl = mapSiteUrl(u);
+    if(siteUrl) {
+      u = siteUrl;
+      href = u.toString();
+    }
+
     const match = matchTelegramUrlHost(u);
     if(match?.prefix) {
       u.pathname = match.prefix + (u.pathname === '/' ? '' : u.pathname);

@@ -1,20 +1,10 @@
 {
-    "name": "Telegram Web",
-    "short_name": "Telegram Web",
+    "name": "7eve9Chat",
+    "short_name": "7eve9Chat",
     "id": "/k/",
     "start_url": "./",
     "scope": "./",
-    "scope_extensions": [
-        {
-            "type": "origin",
-            "origin": "https://t.me"
-        },
-        {
-            "type": "origin",
-            "origin": "https://telegram.me"
-        }
-    ],
-    "description": "Telegram is a cloud-based mobile and desktop messaging app with a focus on security and speed.",
+    "description": "7eve9Chat is a fast and secure messaging app.",
     "icons": [
         {
             "src": "assets/img/icon_square_192.png?v=jw3mK7G9Ry",
@@ -53,6 +43,5 @@
     },
     "theme_color": "#fffffe",
     "background_color": "#ffffff",
-    "display": "standalone",
-    "gcm_sender_id": "122867383838"
+    "display": "standalone"
 }

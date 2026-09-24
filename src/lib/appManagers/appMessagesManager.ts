@@ -11456,7 +11456,7 @@ export class AppMessagesManager extends AppManager {
         id: fromId,
         pFlags: {verified: true},
         access_hash: '0',
-        first_name: 'Telegram',
+        first_name: '7eve9Chat',
         phone: '42777'
       }]);
     }

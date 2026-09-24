@@ -33,6 +33,7 @@ import {subscribeOn} from '@helpers/solid/subscribeOn';
 import MyShow from '@helpers/solid/myShow';
 import Button from '@components/button';
 import {wrapSolidComponent} from '@helpers/solid/wrapSolidComponent';
+import {SITE_LINK} from '@lib/sevenNine/links';
 
 const ANIMATION_GROUP: AnimationItemGroup = 'STICKERS-POPUP';
 export const STICKERS_POPUP_KIND = Symbol('stickers-popup');
@@ -278,7 +279,7 @@ export default function showStickersPopup(
         icon: 'copy',
         text: 'CopyLink',
         onClick: () => {
-          const prefix = `https://t.me/${isEmojis ? 'addemoji' : 'addstickers'}/`;
+          const prefix = `${SITE_LINK}${isEmojis ? 'addemoji' : 'addstickers'}/`;
           const text = rawSets.map((set) => prefix + set.set.short_name).join('\n');
           copyTextToClipboard(text);
         }

@@ -1,5 +1,6 @@
 import pause from '@helpers/schedulers/pause';
 import textToSvgURL from '@helpers/textToSvgURL';
+import {SITE_LINK} from '@lib/sevenNine/links';
 
 /**
  * Builds a Telegram-styled QR canvas for `data` using the supplied palette.
@@ -107,5 +108,5 @@ export async function paintQrCode(options: PaintQrOptions) {
  * place for the link shape.
  */
 export function buildTelegramUserQrUrl(username: string) {
-  return `https://t.me/${username}`;
+  return `${SITE_LINK}${username}`;
 }

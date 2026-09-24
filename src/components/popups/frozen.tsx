@@ -5,12 +5,13 @@ import {formatDate} from '@helpers/date';
 import appImManager from '@lib/appImManager';
 import showFeatureDetailsPopup, {FeatureDetailsButton} from '@components/popups/featureDetails';
 import {FeatureRow} from '@components/featureRows';
+import {SITE_LINK} from '@lib/sevenNine/links';
 
 const TEST = false;
 
 export default function showFrozenPopup() {
   const appConfig = useAppConfig();
-  const url = TEST ? 'https://t.me/telegram' : appConfig.freeze_appeal_url;
+  const url = TEST ? SITE_LINK + 'telegram' : appConfig.freeze_appeal_url;
   const untilDate = TEST ? Date.now() + 86400e3 : appConfig.freeze_until_date * 1000;
 
   const onClick = () => {

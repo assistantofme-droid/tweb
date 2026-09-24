@@ -25,6 +25,7 @@ import {useMaxSavedTones} from './limits';
 import {cachedComposedMessages, CreateTone, Divider, Original, Result, Tone} from './parts';
 import track from '@helpers/solid/track';
 import {ComposeMessageWithAiArgs} from '@lib/appManagers/aiTonesManager';
+import {SITE_LINK} from '@lib/sevenNine/links';
 
 
 export const StyleTab = () => {
@@ -299,7 +300,7 @@ const useShareTone = ({tone}: UseShareToneArgs) => {
 
         if(preparedPaymentResult === PaidMessagesInterceptor.PaymentRejectedSymbol) throw new Error();
 
-        const link = 'https://t.me/addstyle/' + tone.slug;
+        const link = SITE_LINK + 'addstyle/' + tone.slug;
         rootScope.managers.appMessagesManager.sendText({
           peerId: peer.peerId,
           threadId: peer.threadId,

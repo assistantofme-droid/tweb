@@ -24,6 +24,7 @@ import SendMenu from '@components/chat/sendContextMenu';
 import showScheduleSendingPopup from '@components/popups/scheduleSendingPopup';
 import {getMiddleware} from '@helpers/middleware';
 import {SEND_WHEN_ONLINE_TIMESTAMP} from '@appManagers/constants';
+import {SITE_LINK} from '@lib/sevenNine/links';
 
 async function resolveChatRightsActions(peerIdMids: {[fromPeerId: PeerId]: number[]}): Promise<ChatRights[]> {
   const messagesPromises = Object.keys(peerIdMids).map((peerId) => {
@@ -171,7 +172,7 @@ export default async function showForwardPopup(
     const mid = peerIdMids[fromPeerIdStr as any as number][0];
     const username = await rootScope.managers.appPeersManager.getPeerUsername(fromPeerId);
     const msgId = getServerMessageId(mid);
-    let url = 'https://t.me/';
+    let url = SITE_LINK;
     if(username) {
       url += username + '/' + msgId;
     } else {

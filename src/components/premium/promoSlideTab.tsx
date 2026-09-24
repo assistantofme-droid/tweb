@@ -23,6 +23,7 @@ import PremiumOptionsForm from '@components/premium/premiumOptionsForm';
 import RowTsx from '@components/rowTsx';
 import {wrapSolidComponent} from '@helpers/solid/wrapSolidComponent';
 import MediaHeader from '@components/mediaHeader';
+import {SITE_LINK} from '@lib/sevenNine/links';
 
 type PromoSlideTabOptions = PopupPremiumProps & {
   container: HTMLElement,
@@ -152,7 +153,7 @@ export default class PromoSlideTab {
         if(gift._ === 'messageActionGiftPremium') {
           description = i18n('TelegramPremiumUserGiftedPremiumDialogSubtitle');
         } else {
-          const url = 'https://t.me/giftcode/' + gift.slug;
+          const url = SITE_LINK + 'giftcode/' + gift.slug;
 
           const inviteLink = new InviteLink({
             button: false,

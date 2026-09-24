@@ -3,8 +3,9 @@ import {LangPackKey} from '@lib/langPack';
 import {copyTextToClipboard} from '@helpers/clipboard';
 import cancelEvent from '@helpers/dom/cancelEvent';
 import {attachClickEvent} from '@helpers/dom/clickEvent';
+import {SITE_LINK} from '@lib/sevenNine/links';
 
-const T_ME = 'https://t.me/';
+const T_ME = SITE_LINK;
 export default function anchorCopy(options: Partial<{
   // href: string,
   mePath: string,

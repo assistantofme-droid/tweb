@@ -1,6 +1,7 @@
 import {IS_SAFARI} from '@environment/userAgent';
 import {InputGroupCall} from '@layer';
 import apiManagerProxy from '@lib/apiManagerProxy';
+import {SITE_LINK} from '@lib/sevenNine/links';
 
 export function getRtmpStreamUrl(call: InputGroupCall): string {
   const base = `/rtmp/${encodeURIComponent(JSON.stringify(call))}`;
@@ -15,8 +16,8 @@ export function getRtmpShareUrl(peerId: PeerId) {
 
   if(chat.username || chat.usernames?.length) {
     const username = chat.username || chat.usernames[0];
-    return `https://t.me/${username}?livestream`;
+    return `${SITE_LINK}${username}?livestream`;
   }
 
-  return `https://t.me/c/${chat.id}?livestream`;
+  return `${SITE_LINK}c/${chat.id}?livestream`;
 }

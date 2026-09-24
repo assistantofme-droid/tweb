@@ -23,6 +23,7 @@ import Table, {TablePeer} from '@components/table';
 import MediaHeader from '@components/mediaHeader';
 import ListenerSetter from '@helpers/listenerSetter';
 import {getMiddleware} from '@helpers/middleware';
+import {SITE_LINK} from '@lib/sevenNine/links';
 
 const ANIMATION_GROUP = 'STICKERS-POPUP';
 
@@ -57,7 +58,7 @@ export async function applyGiftCode(slug: string, button: HTMLElement, hide: () 
           anchorCallback(() => {
             simulateClickEvent(button.element);
             hide();
-            shareGiftLink('https://t.me/giftcode/' + slug);
+            shareGiftLink(SITE_LINK + 'giftcode/' + slug);
           })
         ],
         button
@@ -110,7 +111,7 @@ export default async function showGiftLinkPopup(
 
   const isUsed = !!giftCode.used_date;
   const titleLangKey: LangPackKey = isUsed ? 'BoostingUsedGiftLink' : 'BoostingGiftLink';
-  const url = isInChat && !isUsed ? '' : 'https://t.me/giftcode/' + slug;
+  const url = isInChat && !isUsed ? '' : SITE_LINK + 'giftcode/' + slug;
   const canUseLink = !isInChat && !isUsed;
 
   createPopup(() => {
