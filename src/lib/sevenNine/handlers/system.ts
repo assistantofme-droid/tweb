@@ -8,7 +8,7 @@ import type {BridgeHandlers, RestBridge} from '@lib/sevenNine/restBridge';
 import App from '@config/app';
 import tsNow from '@helpers/tsNow';
 import {BUNDLED_LANGUAGES, loadBundledLangPack, loadEnglishStrings} from '@lib/sevenNine/lang';
-import {SEVEN_NINE_DC_ID, SEVEN_NINE_ORIGIN} from '@lib/sevenNine/config';
+import {SEVEN_NINE_DC_ID, SEVEN_NINE_SITE} from '@lib/sevenNine/config';
 import {REACTIONS} from '@lib/sevenNine/restBridge';
 
 const NAME_COLORS: number[][] = [
@@ -86,7 +86,7 @@ const APP_CONFIG = {
   message_animated_emoji_max: 100,
   hidden_members_group_size_min: 100,
   forum_upgrade_participants_min: 200,
-  whitelisted_domains: [new URL(SEVEN_NINE_ORIGIN).host],
+  whitelisted_domains: [new URL(SEVEN_NINE_SITE).host],
   autologin_domains: [] as string[],
   url_auth_domains: [] as string[],
   ignore_restriction_reasons: [] as string[],
@@ -198,7 +198,7 @@ export default function systemHandlers(b: RestBridge): BridgeHandlers {
         call_ring_timeout_ms: 90000,
         call_connect_timeout_ms: 30000,
         call_packet_timeout_ms: 10000,
-        me_url_prefix: SEVEN_NINE_ORIGIN + '/',
+        me_url_prefix: SEVEN_NINE_SITE + '/',
         caption_length_max: 4096,
         message_length_max: 4096,
         webfile_dc_id: SEVEN_NINE_DC_ID,

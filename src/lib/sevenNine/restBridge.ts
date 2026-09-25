@@ -60,7 +60,7 @@ import tsNow from '@helpers/tsNow';
 import {ConnectionStatus} from '@lib/mtproto/connectionStatus';
 import RestHttp from '@lib/sevenNine/http';
 import BridgeStore from '@lib/sevenNine/store';
-import {SEVEN_NINE_DC_ID, SEVEN_NINE_ORIGIN} from '@lib/sevenNine/config';
+import {SEVEN_NINE_DC_ID, SEVEN_NINE_ORIGIN, SEVEN_NINE_SITE, SEVEN_NINE_UPLOADS} from '@lib/sevenNine/config';
 import {genericError, RestException, tlError, unimplementedError} from '@lib/sevenNine/errors';
 import {idForUrl, idFromMongoId, idFromMongoIdInt32, isMongoId, parseIsoToEpochSeconds} from '@lib/sevenNine/ids';
 import SocketBridge from '@lib/sevenNine/socketBridge';
@@ -691,7 +691,16 @@ export class RestBridge extends AppManager {
 
   public absoluteUrl(ref: string) {
     if(!ref) return ref;
-    if(/^https?:\/\//i.test(ref) || ref.startsWith('data:') || ref.startsWith('blob:')) return ref;
+    if(ref.startsWith('data:') || ref.startsWith('blob:')) return ref;
+    if(/^https?:\/\//i.test(ref)) {
+      // the site's own files go through the backend origin too (a same-origin proxy)
+      const url = new URL(ref);
+      const uploads = url.pathname.indexOf('/uploads/');
+      return url.origin === new URL(SEVEN_NINE_SITE).origin && uploads !== -1 ?
+        SEVEN_NINE_UPLOADS + url.pathname.slice(uploads + '/uploads/'.length) + url.search :
+        ref;
+    }
+
     return SEVEN_NINE_ORIGIN + (ref.startsWith('/') ? ref : '/' + ref);
   }
 

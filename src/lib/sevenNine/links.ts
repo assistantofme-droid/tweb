@@ -9,10 +9,10 @@
  *   /invite/<code>                  an invite link
  */
 
-import {SEVEN_NINE_ORIGIN} from '@lib/sevenNine/config';
+import {SEVEN_NINE_SITE} from '@lib/sevenNine/config';
 
-export const SITE_HOST = new URL(SEVEN_NINE_ORIGIN).host;
-export const SITE_LINK = SEVEN_NINE_ORIGIN + '/';
+export const SITE_HOST = new URL(SEVEN_NINE_SITE).host;
+export const SITE_LINK = SEVEN_NINE_SITE + '/';
 export const SITE_LINK_SHORT = SITE_HOST + '/';
 
 const USERNAME_PATH = /^\/[a-zA-Z0-9][a-zA-Z0-9_]{3,31}\/?$/;

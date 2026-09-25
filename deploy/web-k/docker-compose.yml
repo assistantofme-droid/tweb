@@ -1,0 +1,13 @@
+services:
+  web-k:
+    build:
+      context: ../..
+      dockerfile: deploy/web-k/Dockerfile
+      # args:
+      #   # mirrors, when Docker Hub / npm can't be reached from the server
+      #   NODE_IMAGE: docker.arvancloud.ir/node:24
+      #   NGINX_IMAGE: docker.arvancloud.ir/nginx:stable-alpine
+      #   NPM_REGISTRY: https://registry.npmjs.org/
+    ports:
+      - "8080:80"
+    restart: unless-stopped

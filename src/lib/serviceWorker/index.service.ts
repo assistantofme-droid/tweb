@@ -22,6 +22,7 @@ import EncryptionKeyStore from '@lib/passcode/keyStore';
 import DeferredIsUsingPasscode from '@lib/passcode/deferredIsUsingPasscode';
 import {onBackgroundsFetch} from '@lib/serviceWorker/backgrounds';
 import {watchMtprotoOnDev} from '@lib/serviceWorker/watchMtprotoOnDev';
+import {isSevenNineBackendUrl} from '@lib/sevenNine/config';
 import {watchCacheStoragesLifetime} from './clearOldCache';
 
 // #if MTPROTO_SW
@@ -267,6 +268,11 @@ watchCacheStoragesLifetime({
 watchMtprotoOnDev({connectedWindows, onWindowConnected});
 
 const onFetch = (event: FetchEvent): void => {
+  // 7eve9Chat backend requests (API, files, realtime) go straight to the network
+  if(isSevenNineBackendUrl(event.request.url)) {
+    return;
+  }
+
   // Web manifests must reach the network so installed PWA metadata can update.
   if(
     import.meta.env.PROD &&

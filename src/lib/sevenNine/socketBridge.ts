@@ -9,7 +9,7 @@ import type {Chat, Peer, Update, User} from '@layer';
 import type {RestBridge, Json} from '@lib/sevenNine/restBridge';
 import {io, Socket} from 'socket.io-client';
 import tsNow from '@helpers/tsNow';
-import {SEVEN_NINE_SOCKET} from '@lib/sevenNine/config';
+import {SEVEN_NINE_SOCKET, SEVEN_NINE_SOCKET_PATH} from '@lib/sevenNine/config';
 import {idFromMongoId, idFromMongoIdInt32, isMongoId, parseIsoToEpochSeconds} from '@lib/sevenNine/ids';
 import {jsonStr} from '@lib/sevenNine/restBridge';
 
@@ -38,6 +38,7 @@ export default class SocketBridge {
     this.disconnect();
     this.connectedUserId = userId;
     const socket = this.socket = io(SEVEN_NINE_SOCKET, {
+      path: SEVEN_NINE_SOCKET_PATH,
       query: {userId},
       auth: {token: this.bridge.token},
       reconnection: true,

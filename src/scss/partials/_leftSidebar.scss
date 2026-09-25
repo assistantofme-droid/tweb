@@ -484,6 +484,9 @@
   .item-main .sidebar-content {
     // overflow: unset;
     justify-content: center;
+    // * the hidden corner buttons wait below the bottom edge: clip rather than
+    // * hide, so nothing (a focus, a scrollIntoView) can scroll them into view
+    overflow: clip;
 
     .btn-corner {
       &:not(.menu-open) .animated-button-icon-icon-first,
