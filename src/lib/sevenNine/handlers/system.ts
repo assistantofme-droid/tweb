@@ -5,7 +5,9 @@
 
 import type {Chat, ForumTopic, HelpPeerColorOption, HelpTimezonesList, Message, User} from '@layer';
 import type {BridgeHandlers, RestBridge} from '@lib/sevenNine/restBridge';
+import App from '@config/app';
 import tsNow from '@helpers/tsNow';
+import {BUNDLED_LANGUAGES, loadBundledLangPack, loadEnglishStrings} from '@lib/sevenNine/lang';
 import {SEVEN_NINE_DC_ID, SEVEN_NINE_ORIGIN} from '@lib/sevenNine/config';
 import {REACTIONS} from '@lib/sevenNine/restBridge';
 
@@ -200,7 +202,9 @@ export default function systemHandlers(b: RestBridge): BridgeHandlers {
         caption_length_max: 4096,
         message_length_max: 4096,
         webfile_dc_id: SEVEN_NINE_DC_ID,
-        reactions_default: {_: 'reactionEmoji', emoticon: REACTIONS[0][0]}
+        reactions_default: {_: 'reactionEmoji', emoticon: REACTIONS[0][0]},
+        // the sign-in page offers the other language
+        suggested_lang_code: (b.uiLanguage || '').startsWith('fa') ? 'en' : 'fa'
       };
     },
 
@@ -218,7 +222,7 @@ export default function systemHandlers(b: RestBridge): BridgeHandlers {
     }),
 
     // this deployment is Iran-only (as in the Android client)
-    'help.getCountriesList': () => ({
+    'help.getCountriesList': ({lang_code}) => ({
       _: 'help.countriesList',
       hash: 98,
       countries: [{
@@ -226,7 +230,7 @@ export default function systemHandlers(b: RestBridge): BridgeHandlers {
         pFlags: {},
         iso2: 'IR',
         default_name: 'Iran',
-        name: 'Iran',
+        name: (lang_code || '').startsWith('fa') ? 'ایران' : 'Iran',
         country_codes: [{
           _: 'help.countryCode',
           country_code: '98',
@@ -241,33 +245,34 @@ export default function systemHandlers(b: RestBridge): BridgeHandlers {
     'help.getPromoData': () => ({_: 'help.promoDataEmpty', expires: tsNow(true) + 3600}),
     'help.dismissSuggestion': () => true,
 
-    // strings come from the app's own bundled lang pack
-    'langpack.getLangPack': ({lang_code}) => ({
-      _: 'langPackDifference',
-      lang_code,
-      from_version: 0,
-      version: 1,
-      strings: []
-    }),
-    'langpack.getDifference': ({lang_code, from_version}) => ({
-      _: 'langPackDifference',
-      lang_code,
-      from_version,
-      version: Math.max(1, from_version),
-      strings: []
-    }),
-    'langpack.getStrings': () => [],
-    'langpack.getLanguages': () => [{
-      _: 'langPackLanguage',
-      pFlags: {},
-      name: 'English',
-      native_name: 'English',
-      lang_code: 'en',
-      plural_code: 'en',
-      strings_count: 1,
-      translated_count: 1,
-      translations_url: ''
-    }],
+    // English is the app's own lang.ts; other languages are bundled translations
+    'langpack.getLangPack': async({lang_code}) => {
+      const bundled = await loadBundledLangPack(lang_code);
+      return {
+        _: 'langPackDifference',
+        lang_code,
+        from_version: 0,
+        version: bundled ? bundled.version : App.langPackVersion,
+        strings: bundled ? bundled.strings : []
+      };
+    },
+    'langpack.getDifference': async({lang_code, from_version}) => {
+      const bundled = await loadBundledLangPack(lang_code);
+      const newer = !!bundled && bundled.version > from_version;
+      return {
+        _: 'langPackDifference',
+        lang_code,
+        from_version,
+        version: newer ? bundled.version : from_version,
+        strings: newer ? bundled.strings : []
+      };
+    },
+    'langpack.getStrings': async({lang_code, keys}) => {
+      const strings = (await loadBundledLangPack(lang_code))?.strings || await loadEnglishStrings();
+      const wanted = new Set(keys);
+      return strings.filter((string) => wanted.has(string.key));
+    },
+    'langpack.getLanguages': () => BUNDLED_LANGUAGES,
 
     // Everything realtime arrives over Socket.IO: there is no pts log. The
     // state is just "now"; getDifference catches up after a reconnect.

@@ -341,6 +341,11 @@ export class RestBridge extends AppManager {
     return this.appMessagesManager;
   }
 
+  /** the language the app's interface is in */
+  public get uiLanguage() {
+    return this.networkerFactory.language;
+  }
+
   public isAuthorized() {
     return !!(this.token && this.selfMongoId);
   }

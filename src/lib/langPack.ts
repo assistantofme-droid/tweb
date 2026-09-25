@@ -17,6 +17,9 @@ import {createSignal} from 'solid-js';
 import commonStateStorage from '@lib/commonStateStorage';
 import Icon from '@components/icon';
 import currencyStarIcon from '@components/currencyStarIcon';
+import formatLangPackStrings from '@helpers/formatLangPackStrings';
+import {loadBundledLangPack} from '@lib/sevenNine/lang';
+import {SEVEN_NINE_DEFAULT_LANG_CODE} from '@lib/sevenNine/config';
 
 export const langPack: {[actionType: string]: LangPackKey} = {
   'messageActionChatCreate': 'ActionCreateGroup',
@@ -151,22 +154,24 @@ namespace I18n {
   }
 
   export function loadLocalLangPack() {
-    const defaultCode = App.langPackCode;
     return Promise.all([
       import('../lang'),
       import('../langSign'),
-      import('../countries')
-    ]).then(([lang, langSign, countries]) => {
+      import('../countries'),
+      // the default language's bundled translation goes over the English
+      loadBundledLangPack(SEVEN_NINE_DEFAULT_LANG_CODE)
+    ]).then(([lang, langSign, countries, bundled]) => {
       const strings: LangPackString[] = [];
       formatLocalStrings(lang.default, strings);
       formatLocalStrings(langSign.default, strings);
+      if(bundled) strings.push(...bundled.strings);
 
       const langPack: LangPackDifference = {
         _: 'langPackDifference',
         from_version: 0,
-        lang_code: defaultCode,
+        lang_code: bundled ? SEVEN_NINE_DEFAULT_LANG_CODE : App.langPackCode,
         strings,
-        version: App.langPackVersion,
+        version: bundled ? bundled.version : App.langPackVersion,
         countries: countries.default,
         localVersion: App.langPackLocalVersion
       };
@@ -191,27 +196,7 @@ namespace I18n {
     return rootScope.managers.appLangPackManager.getStrings(langCode, strings);
   }
 
-  export function formatLocalStrings(strings: any, pushTo: LangPackString[] = []) {
-    for(const i in strings) {
-      // @ts-ignore
-      const v = strings[i];
-      if(typeof(v) === 'string') {
-        pushTo.push({
-          _: 'langPackString',
-          key: i,
-          value: v
-        });
-      } else {
-        pushTo.push({
-          _: 'langPackStringPluralized',
-          key: i,
-          ...v
-        });
-      }
-    }
-
-    return pushTo;
-  }
+  export const formatLocalStrings = formatLangPackStrings;
 
   export function getLangPackAndApply(langCode: string, web?: boolean, ignoreCache?: boolean) {
     const previousLangCode = lastRequestedLangCode;
@@ -230,9 +215,11 @@ namespace I18n {
         formatLocalStrings(l.default as any, strings);
       });
 
-      if(!TEST_LOCAL) pushLocal();
+      // in dev the local English wins, but never over a translation
+      const localLast = TEST_LOCAL && langCode.split('-')[0] === App.langPackCode;
+      if(!localLast) pushLocal();
       strings = strings.concat(...[langPack1.strings, langPack2.strings].filter(Boolean));
-      if(TEST_LOCAL) pushLocal();
+      if(localLast) pushLocal();
 
       langPack1.strings = strings;
       langPack1.countries = countries;

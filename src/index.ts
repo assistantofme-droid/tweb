@@ -20,6 +20,7 @@ import toggleAttributePolyfill from '@helpers/dom/toggleAttributePolyfill';
 import rootScope from '@lib/rootScope';
 import IS_TOUCH_SUPPORTED from '@environment/touchSupport';
 import I18n, {checkLangPackForUpdates, i18n, LangPackKey} from '@lib/langPack';
+import {isRtlLangCode} from '@lib/sevenNine/lang';
 import '@helpers/peerIdPolyfill';
 import '@lib/polyfill';
 import '@lib/debug/mountLogExport'; // main-thread-only: wires window.downloadLogs / collectLogs
@@ -389,14 +390,11 @@ function onInstanceDeactivated(reason: InstanceDeactivateReason) {
 const TIME_LABEL = 'Elapsed time since unlocked';
 
 function setDocumentLangPackProperties(langPack: LangPackDifference.langPackDifference) {
-  if(langPack.lang_code === 'ar' || langPack.lang_code === 'fa' && IS_BETA && false) {
-    document.documentElement.classList.add('is-rtl');
-    document.documentElement.dir = 'rtl';
-    document.documentElement.lang = langPack.lang_code;
-    I18n.setRTL(true);
-  } else {
-    document.documentElement.dir = 'ltr';
-  }
+  const rtl = isRtlLangCode(langPack.lang_code);
+  document.documentElement.classList.toggle('is-rtl', rtl);
+  document.documentElement.dir = rtl ? 'rtl' : 'ltr';
+  document.documentElement.lang = langPack.lang_code;
+  I18n.setRTL(rtl);
 }
 
 (window as any)['showIconLibrary'] = async() => {
@@ -542,6 +540,12 @@ if(import.meta.env.DEV) {
 
   // * handle multi-tab language change (will occur extra time in the original tab though)
   rootScope.addEventListener('language_change', (langCode) => {
+    // the layout's direction is set up once: switching between LTR and RTL takes a reload
+    if(isRtlLangCode(langCode) !== I18n.getIsRTL()) {
+      appNavigationController.reload();
+      return;
+    }
+
     I18n.getLangPackAndApply(langCode);
   });
 

@@ -15,3 +15,6 @@ export const SEVEN_NINE_APP_NAME = '7eve9Chat';
 
 // Everything is served from one "data center"
 export const SEVEN_NINE_DC_ID = 2;
+
+// The app starts in Persian (English stays one tap away)
+export const SEVEN_NINE_DEFAULT_LANG_CODE = 'fa';

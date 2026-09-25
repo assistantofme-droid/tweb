@@ -240,14 +240,12 @@ export default function stickersHandlers(b: RestBridge): BridgeHandlers {
     'messages.readFeaturedStickers': () => true,
     'messages.getArchivedStickers': () => ({_: 'messages.archivedStickers', count: 0, sets: []}),
 
+    // one document per id, in order: the app pairs them up by index
     'messages.getCustomEmojiDocuments': ({document_id}) => {
-      const documents: Document[] = [];
-      for(const id of document_id) {
+      return document_id.map((id): Document => {
         const url = b.getMediaUrl(id);
-        if(url) documents.push(buildCustomEmojiDocument(url));
-      }
-
-      return documents;
+        return url ? buildCustomEmojiDocument(url) : {_: 'documentEmpty', id};
+      });
     },
 
     'stickers.createStickerSet': async({title, short_name, stickers}) => {

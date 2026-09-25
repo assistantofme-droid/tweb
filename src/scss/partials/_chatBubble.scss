@@ -1206,6 +1206,12 @@
     white-space: pre-wrap; // * fix spaces on line begin
     position: relative;
 
+    // * RTL interface: each paragraph takes the direction of its own text, so a
+    // * Latin message reads "Hello!", not "!Hello"
+    .is-rtl & {
+      unicode-bidi: plaintext;
+    }
+
     .custom-emoji {
       display: inline-flex; // fix RTL thumb absolute position
     }

@@ -570,6 +570,11 @@ ul.chatlist {
 
     &-span {
       unicode-bidi: isolate;
+
+      // * RTL interface: a Latin part keeps its own direction ("Ali:", not ":Ali")
+      .is-rtl & {
+        unicode-bidi: plaintext;
+      }
       // * the prefixes keep their trailing space, the message flattens its own
       // * newlines into the single preview line
       white-space: pre;

@@ -438,7 +438,7 @@ export class AppEmojiManager extends AppManager {
         const documents = await Promise.all(messagesEmojiGroups.groups.map((emojiGroup) => this.getCustomEmojiDocument(emojiGroup.icon_emoji_id)));
         return this.emojiGroups[type] = messagesEmojiGroups.groups.map((group, idx) => {
           return {group, document: documents[idx]};
-        });
+        }).filter(({document}) => document); // a group whose icon can't be had is left out
       }
     });
   }
