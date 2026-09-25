@@ -102,45 +102,46 @@ const appColorMap: {[name in AppColorName]: AppColor} = {
   'input-search-background-color': {}
 };
 
+// 7eve9Chat: day, night and light use a blue-green accent (the logo's); tinted keeps its dark blue
 const colorMap: {
   [name in AppTheme['name']]?: {
     [name in AppColorName]?: string
   }
 } = {
   day: {
-    'primary-color': '#3390ec',
+    'primary-color': '#0E96B8',
     'message-out-primary-color': '#5CA853',
     'message-background-color': '#ffffff',
     'surface-color': '#ffffff',
     'danger-color': '#df3f40',
     'primary-text-color': '#000000',
     'secondary-text-color': '#707579',
-    'saved-color': '#359AD4',
+    'saved-color': '#1BA3C4',
     'green-color': '#70b768',
     // SCSS-side defaults migrated from base.scss :root
     'background-color': '#f4f4f5',
     'body-background-color': '#ffffff',
     'border-color': '#dfe1e5',
     'secondary-color': '#c4c9cc',
-    'link-color': '#00488f',
+    'link-color': '#0A6C85',
     'input-search-background-color': '#ffffff'
   },
   night: {
-    'primary-color': '#8774E1',
-    'message-out-primary-color': '#8774E1',
+    'primary-color': '#1A97B8',
+    'message-out-primary-color': '#1A97B8',
     'message-background-color': '#212121',
     'surface-color': '#212121',
     'danger-color': '#ff595a',
     'primary-text-color': '#ffffff',
     'secondary-text-color': '#aaaaaa',
-    'saved-color': '#8774E1',
+    'saved-color': '#1A97B8',
     'green-color': '#5CC85E',
     // SCSS-side defaults migrated from base.scss .night
     'background-color': '#181818',
     'body-background-color': '#181818',
     'border-color': '#0f0f0f',
     'secondary-color': '#707579',
-    'link-color': '#8774E1', // SCSS resolves to var(--primary-color)
+    'link-color': '#1A97B8', // SCSS resolves to var(--primary-color)
     'input-search-background-color': '#181818'
   },
   tinted: {
@@ -171,20 +172,20 @@ const colorMap: {
     // base colors ported from Telegram-Android day.attheme (Android's "Day" / baseThemeDay)
     // Distinct from tweb's existing `day` theme (which maps to baseThemeClassic with green outgoing bubbles)
     // primary ← chat_outBubble (#2D7ED5 — signature Day blue, replaces day's green out-message).
-    'primary-color': '#2D7ED5',
-    'message-out-primary-color': '#2D7ED5',
+    'primary-color': '#0B8EAF',
+    'message-out-primary-color': '#0B8EAF',
     'message-background-color': '#F0F0F0', // chat_inBubble — light gray (vs day's pure white)
     'surface-color': '#FFFFFF',
     'danger-color': '#DF3F40',
     'primary-text-color': '#333333', // windowBackgroundWhiteBlackText
     'secondary-text-color': '#8C8E91', // windowBackgroundWhiteGrayText
-    'saved-color': '#2D7ED5',
+    'saved-color': '#0B8EAF',
     'green-color': '#04AC35', // windowBackgroundWhiteGreenText2
     'background-color': '#F4F4F5',
     'body-background-color': '#FFFFFF',
     'border-color': '#DFE1E5',
     'secondary-color': '#C4C9CC',
-    'link-color': '#238AE3', // windowBackgroundWhiteBlueText
+    'link-color': '#0B8EAF', // windowBackgroundWhiteBlueText
     'input-search-background-color': '#FFFFFF'
   }
 };

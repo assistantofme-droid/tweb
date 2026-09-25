@@ -773,7 +773,7 @@ function drawAvatar(ctx: CanvasRenderingContext2D, host: HTMLElement, cx: number
     ctx.fillStyle = grad;
   } else {
     const bg = cs?.backgroundColor;
-    ctx.fillStyle = (bg && bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent') ? bg : 'rgb(51, 144, 236)';
+    ctx.fillStyle = (bg && bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent') ? bg : 'rgb(14, 150, 184)';
   }
   ctx.fillRect(cx - AVATAR_R, cy - AVATAR_R, AVATAR_R * 2, AVATAR_R * 2);
   const abbreviation = avatarEl?.textContent?.trim() ?? '';

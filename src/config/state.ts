@@ -302,7 +302,7 @@ export const DEFAULT_THEME: Theme = {
     _: 'themeSettings',
     pFlags: {},
     base_theme: {_: 'baseThemeClassic'},
-    accent_color: 0x3390ec,
+    accent_color: 0x0E96B8,
     message_colors: [0x5CA853],
     wallpaper: {
       _: 'wallPaper',
@@ -328,8 +328,8 @@ export const DEFAULT_THEME: Theme = {
     _: 'themeSettings',
     pFlags: {},
     base_theme: {_: 'baseThemeNight'},
-    accent_color: 0x8774E1,
-    message_colors: [0x8774E1],
+    accent_color: 0x1A97B8,
+    message_colors: [0x1A97B8],
     wallpaper: {
       _: 'wallPaper',
       pFlags: {
@@ -345,10 +345,11 @@ export const DEFAULT_THEME: Theme = {
         _: 'wallPaperSettings',
         pFlags: {},
         intensity: -50,
-        background_color: 0xfec496,
-        second_background_color: 0xdd6cb9,
-        third_background_color: 0x962fbf,
-        fourth_background_color: 0x4f5bd5
+        // blue-green, with the accent (Telegram's is orange-purple)
+        background_color: 0x7fd6e0,
+        second_background_color: 0x2f9fbe,
+        third_background_color: 0x1b5f86,
+        fourth_background_color: 0x3a6fb0
       }
     }
   }, {
@@ -391,8 +392,8 @@ export const DEFAULT_THEME: Theme = {
     _: 'themeSettings',
     pFlags: {},
     base_theme: {_: 'baseThemeDay'},
-    accent_color: 0x2D7ED5,
-    message_colors: [0x2D7ED5],
+    accent_color: 0x0B8EAF,
+    message_colors: [0x0B8EAF],
     wallpaper: {
       _: 'wallPaper',
       pFlags: {
